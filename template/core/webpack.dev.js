@@ -1,9 +1,10 @@
-
+const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseWebpack = require('./webpack.base')
+const ChromeReloadPlugin = require('wcer')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const {styleLoaders} = require('./tools')
+const { styleLoaders } = require('./tools')
 module.exports = merge(baseWebpack, {
   // cheap-module-eval-source-map быстрее для разработки
   watch: true,
@@ -16,6 +17,10 @@ module.exports = merge(baseWebpack, {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"development"'
     }),
-    new FriendlyErrorsPlugin()
+    new FriendlyErrorsPlugin(),
+    new ChromeReloadPlugin({
+      port: 9090,
+      manifest: path.join(__dirname, '..', 'src', 'manifest.js')
+    }),
   ]
 })
